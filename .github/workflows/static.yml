@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare System Game</title>
+    <style>
+        body {
+            font-family: 'Inter', Arial, sans-serif; /* Using Inter font */
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8; /* Light grayish-blue background */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content horizontally */
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #4a90e2; /* A pleasant blue */
+            color: white;
+            padding: 1em 0;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+            width: 100%;
+            max-width: 1200px; /* Max width for larger screens */
+            box-sizing: border-box;
+        }
+
+        #game-info, #message-area {
+            background-color: #ffffff;
+            padding: 15px 20px;
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+        }
+
+        #message-area {
+            color: #d8000c; /* Error message color */
+            background-color: #ffd2d2; /* Light red background for errors */
+            border-color: #d8000c;
+            min-height: 20px; /* Ensure it's visible even when empty */
+            display: none; /* Hidden by default */
+        }
+         #message-area.success {
+            color: #270;
+            background-color: #DFF2BF;
+            border-color: #4F8A10;
+        }
+
+
+        #teams-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .team {
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #e0e0e0;
+            transition: transform 0.2s ease-in-out;
+            overflow: hidden; /* Important for background effect */
+            position: relative; /* Positioning context for the overlay */
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* This pseudo-element creates the blurred overlay */
+        .team::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.85); /* White overlay for readability */
+            backdrop-filter: blur(3px); /* The blur effect */
+            -webkit-backdrop-filter: blur(3px);
+            z-index: 0;
+        }
+
+        .team-content {
+            position: relative; /* Ensures content is above the overlay */
+            z-index: 1;
+            padding: 20px;
+            background: transparent; /* Makes sure this container doesn't block the view of the pseudo-element */
+        }
+
+
+        .team:hover {
+            transform: translateY(-5px); /* Slight lift on hover */
+        }
+
+        .team h3 {
+            margin-top: 0;
+            color: #4a90e2; /* Team title color matches header */
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .team .budget, .team .health-score {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .team .budget {
+             color: #34495e; /* Dark blue-gray for budget */
+        }
+        .team .health-score {
+             color: #1E8449; /* Darker green for health */
+        }
+        .team .ideal-spend {
+            display: none; /* Hides the ideal spend element */
+        }
+
+
+        .team label {
+            display: block;
+            margin-top: 10px;
+            font-weight: 600; /* Semi-bold labels */
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .team input[type="number"] {
+            width: calc(100% - 18px); /* Adjust for padding */
+            padding: 10px; /* Increased padding */
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px; /* Rounded input fields */
+            box-sizing: border-box;
+            font-size: 1em;
+            background-color: rgba(255, 255, 255, 0.7); /* Slightly transparent inputs */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .team input[type="number"]:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+            outline: none;
+            background-color: white;
+        }
+        .team input[type="number"]:disabled {
+            background-color: #e9ecef;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+
+
+        .team .total-spending {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #e74c3c; /* Red for spending */
+            font-size: 1.05em;
+        }
+
+        #controls {
+            text-align: center;
+            margin-top: 30px;
+            padding-bottom: 20px; /* Space at the bottom */
+        }
+
+        #next-round-button {
+            background: linear-gradient(145deg, #5cb85c, #4cae4c); /* Green gradient */
+            color: white;
+            padding: 12px 28px; /* Slightly larger padding */
+            border: none;
+            border-radius: 25px; /* Pill-shaped button */
+            font-size: 1.15em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        #next-round-button:hover {
+            background: linear-gradient(145deg, #4cae4c, #5cb85c);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+
+        #next-round-button:active {
+            transform: translateY(0px);
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+        }
+
+        #next-round-button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        footer {
+            background-color: #34495e; /* Darker footer */
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+            width: 100%;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Healthcare System Game</h1>
+    </header>
+
+    <main>
+        <section id="game-info">
+            <h2>Round: <span id="round-number">1</span></h2>
+            <p>Current Patient Case: <span id="patient-case-details">Waiting for case details...</span></p>
+        </section>
+
+        <section id="message-area">
+            <!-- Messages to the user will appear here -->
+        </section>
+
+        <section id="teams-container">
+            <!-- Team sections will be dynamically generated here by JavaScript -->
+        </section>
+
+        <section id="controls">
+            <button id="next-round-button">Submit Decisions & Proceed to Next Round</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Health Systems Study Game</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Game Configuration ---
+            const initialBudget = 20000; // CHANGED: Budget increased to $20,000
+            const initialHealth = 100;
+            const numTeams = 5; 
+            let currentRound = 1;
+            let patientCases = [];
+
+            const teams = []; // Array to hold team objects
+            const teamData = [
+                { name: "United States", flagUrl: "https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" },
+                { name: "United Kingdom", flagUrl: "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg" },
+                { name: "India", flagUrl: "https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" },
+                { name: "Switzerland", flagUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Switzerland.svg" },
+                { name: "Singapore", flagUrl: "https://upload.wikimedia.org/wikipedia/commons/4/48/Flag_of_Singapore.svg" }
+            ];
+
+            // --- DOM Element References ---
+            const roundNumberDisplay = document.getElementById('round-number');
+            const patientCaseDetailsDisplay = document.getElementById('patient-case-details');
+            const teamsContainer = document.getElementById('teams-container');
+            const nextRoundButton = document.getElementById('next-round-button');
+            const messageArea = document.getElementById('message-area');
+
+            // --- Utility Functions ---
+            function showMessage(text, type = 'error') {
+                messageArea.textContent = text;
+                messageArea.className = type; 
+                messageArea.style.display = 'block';
+            }
+
+            function clearMessage() {
+                messageArea.textContent = '';
+                messageArea.style.display = 'none';
+            }
+
+            // --- Core Game Data Structures ---
+            function createTeam(id) {
+                const data = teamData[id - 1];
+                return {
+                    id: id,
+                    name: data.name,
+                    flagUrl: data.flagUrl,
+                    budget: initialBudget,
+                    patientHealth: initialHealth,
+                    spendingThisRound: {
+                        insurance: 0, copay: 0, coinsurance: 0, housingFamily: 0
+                    },
+                    totalRoundSpending: 0,
+                    isEliminated: false
+                };
+            }
+
+            // --- Game Initialization ---
+            function initializeGame() {
+                for (let i = 1; i <= numTeams; i++) {
+                    teams.push(createTeam(i));
+                }
+                renderTeamsUI();
+                loadPatientCaseForRound(currentRound);
+                updateAllTotalSpendingDisplays();
+            }
+
+            // --- Patient Case Logic ---
+            function loadPatientCaseForRound(round) {
+                clearMessage();
+                if (patientCases.length === 0) {
+                     patientCaseDetailsDisplay.textContent = `No patient cases loaded. Please define them in the script. Round ${round}.`;
+                     return;
+                } 
+                
+                const currentCase = patientCases[round - 1];
+                if (!currentCase) {
+                    patientCaseDetailsDisplay.textContent = "All patient cases have been presented. Game Over!";
+                    nextRoundButton.textContent = "Game Finished";
+                    nextRoundButton.disabled = true;
+                    showMessage("Congratulations! You've completed all rounds.", "success");
+                    return;
+                }
+                
+                patientCaseDetailsDisplay.innerHTML = currentCase.description;
+
+                teams.forEach(team => {
+                    if (team.isEliminated) return;
+                    
+                    // Reset inputs
+                    team.spendingThisRound = { insurance: 0, copay: 0, coinsurance: 0, housingFamily: 0 };
+                    team.totalRoundSpending = 0;
+                    const teamElement = document.getElementById(`team-${team.id}`);
+                    if (teamElement) {
+                        teamElement.querySelector(`input[name="insurance"]`).value = 0;
+                        teamElement.querySelector(`input[name="copay"]`).value = 0;
+                        teamElement.querySelector(`input[name="coinsurance"]`).value = 0;
+                        teamElement.querySelector(`input[name="housingFamily"]`).value = 0;
+                    }
+                });
+                updateAllTotalSpendingDisplays();
+                roundNumberDisplay.textContent = round;
+            }
+
+            // --- UI Rendering Functions ---
+            function renderTeamsUI() {
+                teamsContainer.innerHTML = '';
+                teams.forEach(team => {
+                    const teamDiv = document.createElement('div');
+                    teamDiv.classList.add('team');
+                    teamDiv.id = `team-${team.id}`;
+                    teamDiv.style.backgroundImage = `url('${team.flagUrl}')`;
+                    
+                    // REMOVED: The <p> tag for ideal-spend is no longer generated
+                    teamDiv.innerHTML = `
+                        <div class="team-content">
+                            <h3>${team.name}</h3>
+                            <p class="budget">Budget: $<span id="budget-${team.id}">${team.budget.toLocaleString()}</span></p>
+                            <p class="health-score">Patient Health: <span id="health-${team.id}">${team.patientHealth}</span>%</p>
+                            <div>
+                                <label for="insurance-${team.id}">1. Insurance Coverage Cost:</label>
+                                <input type="number" id="insurance-${team.id}" name="insurance" min="0" value="0" data-teamid="${team.id}" ${team.isEliminated ? 'disabled' : ''}>
+                            </div>
+                            <div>
+                                <label for="copay-${team.id}">2. Copay Cost (to System):</label>
+                                <input type="number" id="copay-${team.id}" name="copay" min="0" value="0" data-teamid="${team.id}" ${team.isEliminated ? 'disabled' : ''}>
+                            </div>
+                            <div>
+                                <label for="coinsurance-${team.id}">3. Co-insurance Cost (to System):</label>
+                                <input type="number" id="coinsurance-${team.id}" name="coinsurance" min="0" value="0" data-teamid="${team.id}" ${team.isEliminated ? 'disabled' : ''}>
+                            </div>
+                            <div>
+                                <label for="housingFamily-${team.id}">4. Housing & Family Support Cost:</label>
+                                <input type="number" id="housingFamily-${team.id}" name="housingFamily" min="0" value="0" data-teamid="${team.id}" ${team.isEliminated ? 'disabled' : ''}>
+                            </div>
+                            <p class="total-spending" id="total-spending-${team.id}">Total Round Spending: $0</p>
+                        </div>
+                    `;
+                    teamsContainer.appendChild(teamDiv);
+                    updateTeamHealthDisplay(team.id);
+
+                    teamDiv.querySelectorAll('input[type="number"]').forEach(input => {
+                        input.addEventListener('input', handleSpendingInputChange);
+                        input.addEventListener('focus', clearMessage);
+                    });
+                });
+            }
+            
+            function updateAllTotalSpendingDisplays() {
+                teams.forEach(team => {
+                    if (team.isEliminated) return;
+                    updateTeamTotalSpendingDisplay(team.id);
+                });
+            }
+
+            function updateTeamTotalSpendingDisplay(teamId) {
+                const team = teams.find(t => t.id === teamId);
+                if (team) {
+                    const totalSpendingDisplay = document.getElementById(`total-spending-${team.id}`);
+                    if (totalSpendingDisplay) {
+                        totalSpendingDisplay.textContent = `Total Round Spending: $${team.totalRoundSpending.toLocaleString()}`;
+                    }
+                }
+            }
+            
+            function updateTeamHealthDisplay(teamId) {
+                const team = teams.find(t => t.id === teamId);
+                const healthDisplay = document.getElementById(`health-${teamId}`);
+                if (healthDisplay && team) {
+                    healthDisplay.textContent = team.patientHealth.toFixed(1);
+                    const healthScoreP = healthDisplay.parentElement;
+                    const red = Math.min(255, (100 - team.patientHealth) * 2.55 * 2);
+                    const green = Math.min(174, team.patientHealth * 1.74);
+                    healthScoreP.style.color = `rgb(${red.toFixed(0)}, ${green.toFixed(0)}, 0)`;
+                }
+            }
+
+
+            function updateTeamBudgetDisplay(teamId) {
+                const team = teams.find(t => t.id === teamId);
+                const budgetDisplay = document.getElementById(`budget-${team.id}`);
+                if (budgetDisplay && team) {
+                    budgetDisplay.textContent = team.budget.toLocaleString();
+                    if (team.budget <= 0) {
+                         budgetDisplay.style.color = '#e74c3c';
+                    }
+                }
+            }
+
+            // --- Event Handlers ---
+            function handleSpendingInputChange(event) {
+                const teamId = parseInt(event.target.dataset.teamid);
+                const spendingCategory = event.target.name;
+                const value = parseInt(event.target.value) || 0;
+
+                const team = teams.find(t => t.id === teamId);
+                if (team && !team.isEliminated) {
+                    team.spendingThisRound[spendingCategory] = value;
+                    team.totalRoundSpending = Object.values(team.spendingThisRound).reduce((sum, val) => sum + val, 0);
+                    updateTeamTotalSpendingDisplay(team.id);
+                }
+            }
+
+            nextRoundButton.addEventListener('click', () => {
+                clearMessage();
+                let allInputsValid = true;
+                let activeTeams = teams.filter(t => !t.isEliminated);
+
+                if (activeTeams.length === 0) {
+                    showMessage("All teams have been eliminated. Game Over!", "error");
+                    nextRoundButton.disabled = true;
+                    return;
+                }
+
+                const currentCase = patientCases[currentRound - 1];
+                if (!currentCase) {
+                    console.error("Could not find patient case for round: ", currentRound);
+                    return;
+                }
+
+                activeTeams.forEach(team => {
+                    const insuranceInput = document.getElementById(`insurance-${team.id}`);
+                    const copayInput = document.getElementById(`copay-${team.id}`);
+                    const coinsuranceInput = document.getElementById(`coinsurance-${team.id}`);
+                    const housingFamilyInput = document.getElementById(`housingFamily-${team.id}`);
+
+                    team.spendingThisRound.insurance = parseInt(insuranceInput.value) || 0;
+                    team.spendingThisRound.copay = parseInt(copayInput.value) || 0;
+                    team.spendingThisRound.coinsurance = parseInt(coinsuranceInput.value) || 0;
+                    team.spendingThisRound.housingFamily = parseInt(housingFamilyInput.value) || 0;
+                    
+                    team.totalRoundSpending = Object.values(team.spendingThisRound).reduce((sum, val) => sum + val, 0);
+                    updateTeamTotalSpendingDisplay(team.id);
+
+                    if (team.totalRoundSpending > team.budget) {
+                        showMessage(`${team.name} cannot spend $${team.totalRoundSpending.toLocaleString()}. Budget is $${team.budget.toLocaleString()}.`, 'error');
+                        allInputsValid = false;
+                    }
+                });
+
+                if (!allInputsValid) return;
+
+                activeTeams.forEach(team => {
+                    // Update budget
+                    team.budget -= team.totalRoundSpending;
+                    updateTeamBudgetDisplay(team.id);
+                    
+                    // Update patient health using country-specific ideal spend
+                    const idealSpendForTeam = currentCase.idealSpend[team.name];
+                    if (idealSpendForTeam && team.totalRoundSpending < idealSpendForTeam) {
+                        const percentageOfCareMet = team.totalRoundSpending / idealSpendForTeam;
+                        const healthLoss = (1 - percentageOfCareMet) * 15;
+                        team.patientHealth = Math.max(0, team.patientHealth - healthLoss);
+                    }
+                    updateTeamHealthDisplay(team.id);
+
+                    // Check for budget elimination
+                    if (team.budget <= 0) {
+                        team.isEliminated = true;
+                        team.budget = 0;
+                        updateTeamBudgetDisplay(team.id);
+                        showMessage(`${team.name} has run out of money and is eliminated!`, 'error');
+                        
+                        const teamElement = document.getElementById(`team-${team.id}`);
+                        teamElement.querySelectorAll('input[type="number"]').forEach(input => input.disabled = true);
+                        teamElement.style.opacity = 0.6;
+                    }
+                });
+
+                if (teams.every(t => t.isEliminated)) {
+                    showMessage("All teams have been eliminated. Game Over!", "error");
+                    nextRoundButton.disabled = true;
+                    return;
+                }
+
+                currentRound++;
+                loadPatientCaseForRound(currentRound);
+            });
+
+            // --- Populate Patient Cases (EDIT THIS SECTION) ---
+            // Each case now has an idealSpend OBJECT where you can set a value for each country.
+            patientCases = [
+                { 
+                    round: 1, 
+                    description: "Patient A (Round 1): 45-year-old software developer with acute appendicitis. Requires emergency surgery, hospital stay, and follow-up.",
+                    idealSpend: {
+                        "United States": 3500,
+                        "United Kingdom": 2800,
+                        "India": 1200,
+                        "Switzerland": 4000,
+                        "Singapore": 3200
+                    }
+                },
+                { 
+                    round: 2, 
+                    description: "Patient B (Round 2): 72-year-old retired teacher with newly diagnosed Type 2 Diabetes. Requires lifestyle education, medication, regular glucose monitoring supplies, and specialist consultation.",
+                    idealSpend: {
+                        "United States": 1800,
+                        "United Kingdom": 1200,
+                        "India": 600,
+                        "Switzerland": 2000,
+                        "Singapore": 1500
+                    }
+                },
+                { 
+                    round: 3, 
+                    description: "Patient C (Round 3): 6-month-old infant with a severe respiratory infection (RSV). Requires hospitalization, oxygen therapy, and potential intensive care.",
+                    idealSpend: {
+                        "United States": 6000,
+                        "United Kingdom": 4500,
+                        "India": 2000,
+                        "Switzerland": 6500,
+                        "Singapore": 5500
+                    }
+                },
+                { 
+                    round: 4, 
+                    description: "Patient D (Round 4): 30-year-old gig economy worker with a major depressive episode and anxiety. Needs therapy, medication, and support for temporary inability to work.",
+                     idealSpend: {
+                        "United States": 2800,
+                        "United Kingdom": 2200,
+                        "India": 800,
+                        "Switzerland": 3200,
+                        "Singapore": 2600
+                    }
+                },
+                { 
+                    round: 5, 
+                    description: "Patient E (Round 5): 55-year-old factory worker with chronic back pain due to a workplace injury. Needs pain management, physical therapy, and assessment for disability benefits.",
+                    idealSpend: {
+                        "United States": 2500,
+                        "United Kingdom": 1800,
+                        "India": 700,
+                        "Switzerland": 2800,
+                        "Singapore": 2200
+                    }
+                }
+            ];
+            // --- End of Patient Cases ---
+
+
+            // --- Start the game ---
+            initializeGame();
+        });
+    </script>
+</body>
+</html>
