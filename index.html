@@ -1,0 +1,605 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Healthcare System Game&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Inter', Arial, sans-serif; /* Using Inter font */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #f0f4f8; /* Light grayish-blue background */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #333;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>align-items: center; /* Center content horizontally */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>min-height: 100vh;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>header {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #4a90e2; /* A pleasant blue */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 1em 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 2px 4px rgba(0,0,0,0.1);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-bottom-left-radius: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-bottom-right-radius: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>main {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>flex: 1;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-width: 1200px; /* Max width for larger screens */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-sizing: border-box;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>#game-info, #message-area {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #ffffff;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 15px 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 8px; /* Rounded corners */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 2px 5px rgba(0,0,0,0.05);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid #e0e0e0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>#message-area {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #d8000c; /* Error message color */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #ffd2d2; /* Light red background for errors */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-color: #d8000c;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>min-height: 20px; /* Ensure it's visible even when empty */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: none; /* Hidden by default */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">         </span>#message-area.success {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #270;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #DFF2BF;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-color: #4F8A10;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>#teams-container {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>gap: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.team {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 8px; /* Rounded corners */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 4px 12px rgba(0,0,0,0.15);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid #e0e0e0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: transform 0.2s ease-in-out;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>overflow: hidden; /* Important for background effect */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: relative; /* Positioning context for the overlay */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-size: cover;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-position: center;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* This pseudo-element creates the blurred overlay */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.team::before {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>content: '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>top: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>left: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>right: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>bottom: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: rgba(255, 255, 255, 0.85); /* White overlay for readability */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>backdrop-filter: blur(3px); /* The blur effect */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>-webkit-backdrop-filter: blur(3px);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>z-index: 0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.team-content {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: relative; /* Ensures content is above the overlay */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>z-index: 1;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: transparent; /* Makes sure this container doesn't block the view of the pseudo-element */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.team:hover {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(-5px); /* Slight lift on hover */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.team h3 {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #4a90e2; /* Team title color matches header */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-bottom: 2px solid #e0e0e0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding-bottom: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.team .budget, .team .health-score {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.2em;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-weight: bold;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.team .budget {</p>
+<p class="p1"><span class="Apple-converted-space">             </span>color: #34495e; /* Dark blue-gray for budget */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.team .health-score {</p>
+<p class="p1"><span class="Apple-converted-space">             </span>color: #1E8449; /* Darker green for health */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.team .ideal-spend {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: none; /* Hides the ideal spend element */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.team label {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 600; /* Semi-bold labels */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #555;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.95em;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.team input[type="number"] {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: calc(100% - 18px); /* Adjust for padding */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 10px; /* Increased padding */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 5px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid #ccc;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 6px; /* Rounded input fields */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-sizing: border-box;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1em;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: rgba(255, 255, 255, 0.7); /* Slightly transparent inputs */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: border-color 0.3s ease, box-shadow 0.3s ease;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.team input[type="number"]:focus {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-color: #4a90e2;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outline: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: white;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.team input[type="number"]:disabled {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #e9ecef;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #6c757d;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: not-allowed;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.team .total-spending {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-weight: bold;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #e74c3c; /* Red for spending */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.05em;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>#controls {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 30px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding-bottom: 20px; /* Space at the bottom */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>#next-round-button {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(145deg, #5cb85c, #4cae4c); /* Green gradient */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 12px 28px; /* Slightly larger padding */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 25px; /* Pill-shaped button */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.15em;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-weight: bold;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 4px 6px rgba(0,0,0,0.1);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>#next-round-button:hover {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(145deg, #4cae4c, #5cb85c);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 6px 8px rgba(0,0,0,0.15);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(-2px);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>#next-round-button:active {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(0px);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 2px 3px rgba(0,0,0,0.1);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>#next-round-button:disabled {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: #cccccc;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: not-allowed;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: none;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>footer {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #34495e; /* Darker footer */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 1em 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-top-left-radius: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-top-right-radius: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;header&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h1&gt;Healthcare System Game&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;main&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="game-info"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2&gt;Round: &lt;span id="round-number"&gt;1&lt;/span&gt;&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p&gt;Current Patient Case: &lt;span id="patient-case-details"&gt;Waiting for case details...&lt;/span&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="message-area"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Messages to the user will appear here --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="teams-container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- Team sections will be dynamically generated here by JavaScript --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;section id="controls"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button id="next-round-button"&gt;Submit Decisions &amp; Proceed to Next Round&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/section&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/main&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;footer&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;&amp;copy; 2024 Health Systems Study Game&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/footer&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.addEventListener('DOMContentLoaded', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Game Configuration ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const initialBudget = 20000; // CHANGED: Budget increased to $20,000</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const initialHealth = 100;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const numTeams = 5;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let currentRound = 1;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let patientCases = [];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const teams = []; // Array to hold team objects</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const teamData = [</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ name: "United States", flagUrl: "https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ name: "United Kingdom", flagUrl: "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg" },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ name: "India", flagUrl: "https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg" },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ name: "Switzerland", flagUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Switzerland.svg" },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{ name: "Singapore", flagUrl: "https://upload.wikimedia.org/wikipedia/commons/4/48/Flag_of_Singapore.svg" }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- DOM Element References ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const roundNumberDisplay = document.getElementById('round-number');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const patientCaseDetailsDisplay = document.getElementById('patient-case-details');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const teamsContainer = document.getElementById('teams-container');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const nextRoundButton = document.getElementById('next-round-button');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const messageArea = document.getElementById('message-area');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Utility Functions ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>function showMessage(text, type = 'error') {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>messageArea.textContent = text;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>messageArea.className = type;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>messageArea.style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function clearMessage() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>messageArea.textContent = '';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>messageArea.style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Core Game Data Structures ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>function createTeam(id) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const data = teamData[id - 1];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>id: id,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>name: data.name,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>flagUrl: data.flagUrl,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>budget: initialBudget,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>patientHealth: initialHealth,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>spendingThisRound: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>insurance: 0, copay: 0, coinsurance: 0, housingFamily: 0</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>totalRoundSpending: 0,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>isEliminated: false</p>
+<p class="p1"><span class="Apple-converted-space">                </span>};</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Game Initialization ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>function initializeGame() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>for (let i = 1; i &lt;= numTeams; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>teams.push(createTeam(i));</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>renderTeamsUI();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>loadPatientCaseForRound(currentRound);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>updateAllTotalSpendingDisplays();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Patient Case Logic ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>function loadPatientCaseForRound(round) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>clearMessage();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (patientCases.length === 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>patientCaseDetailsDisplay.textContent = `No patient cases loaded. Please define them in the script. Round ${round}.`;</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const currentCase = patientCases[round - 1];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!currentCase) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>patientCaseDetailsDisplay.textContent = "All patient cases have been presented. Game Over!";</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>nextRoundButton.textContent = "Game Finished";</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>nextRoundButton.disabled = true;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>showMessage("Congratulations! You've completed all rounds.", "success");</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>patientCaseDetailsDisplay.innerHTML = currentCase.description;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>teams.forEach(team =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (team.isEliminated) return;</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// Reset inputs</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>team.spendingThisRound = { insurance: 0, copay: 0, coinsurance: 0, housingFamily: 0 };</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>team.totalRoundSpending = 0;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const teamElement = document.getElementById(`team-${team.id}`);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (teamElement) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>teamElement.querySelector(`input[name="insurance"]`).value = 0;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>teamElement.querySelector(`input[name="copay"]`).value = 0;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>teamElement.querySelector(`input[name="coinsurance"]`).value = 0;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>teamElement.querySelector(`input[name="housingFamily"]`).value = 0;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>updateAllTotalSpendingDisplays();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>roundNumberDisplay.textContent = round;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- UI Rendering Functions ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>function renderTeamsUI() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>teamsContainer.innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>teams.forEach(team =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const teamDiv = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>teamDiv.classList.add('team');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>teamDiv.id = `team-${team.id}`;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>teamDiv.style.backgroundImage = `url('${team.flagUrl}')`;</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// REMOVED: The &lt;p&gt; tag for ideal-spend is no longer generated</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>teamDiv.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="team-content"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3&gt;${team.name}&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="budget"&gt;Budget: $&lt;span id="budget-${team.id}"&gt;${team.budget.toLocaleString()}&lt;/span&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="health-score"&gt;Patient Health: &lt;span id="health-${team.id}"&gt;${team.patientHealth}&lt;/span&gt;%&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;label for="insurance-${team.id}"&gt;1. Insurance Coverage Cost:&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;input type="number" id="insurance-${team.id}" name="insurance" min="0" value="0" data-teamid="${team.id}" ${team.isEliminated ? 'disabled' : ''}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;label for="copay-${team.id}"&gt;2. Copay Cost (to System):&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;input type="number" id="copay-${team.id}" name="copay" min="0" value="0" data-teamid="${team.id}" ${team.isEliminated ? 'disabled' : ''}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;label for="coinsurance-${team.id}"&gt;3. Co-insurance Cost (to System):&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;input type="number" id="coinsurance-${team.id}" name="coinsurance" min="0" value="0" data-teamid="${team.id}" ${team.isEliminated ? 'disabled' : ''}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;label for="housingFamily-${team.id}"&gt;4. Housing &amp; Family Support Cost:&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;input type="number" id="housingFamily-${team.id}" name="housingFamily" min="0" value="0" data-teamid="${team.id}" ${team.isEliminated ? 'disabled' : ''}&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;p class="total-spending" id="total-spending-${team.id}"&gt;Total Round Spending: $0&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>teamsContainer.appendChild(teamDiv);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>updateTeamHealthDisplay(team.id);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>teamDiv.querySelectorAll('input[type="number"]').forEach(input =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>input.addEventListener('input', handleSpendingInputChange);</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>input.addEventListener('focus', clearMessage);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function updateAllTotalSpendingDisplays() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>teams.forEach(team =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (team.isEliminated) return;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>updateTeamTotalSpendingDisplay(team.id);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function updateTeamTotalSpendingDisplay(teamId) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const team = teams.find(t =&gt; t.id === teamId);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (team) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const totalSpendingDisplay = document.getElementById(`total-spending-${team.id}`);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (totalSpendingDisplay) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>totalSpendingDisplay.textContent = `Total Round Spending: $${team.totalRoundSpending.toLocaleString()}`;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function updateTeamHealthDisplay(teamId) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const team = teams.find(t =&gt; t.id === teamId);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const healthDisplay = document.getElementById(`health-${teamId}`);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (healthDisplay &amp;&amp; team) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>healthDisplay.textContent = team.patientHealth.toFixed(1);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const healthScoreP = healthDisplay.parentElement;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const red = Math.min(255, (100 - team.patientHealth) * 2.55 * 2);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const green = Math.min(174, team.patientHealth * 1.74);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>healthScoreP.style.color = `rgb(${red.toFixed(0)}, ${green.toFixed(0)}, 0)`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function updateTeamBudgetDisplay(teamId) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const team = teams.find(t =&gt; t.id === teamId);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const budgetDisplay = document.getElementById(`budget-${team.id}`);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (budgetDisplay &amp;&amp; team) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>budgetDisplay.textContent = team.budget.toLocaleString();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (team.budget &lt;= 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                         </span>budgetDisplay.style.color = '#e74c3c';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Event Handlers ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>function handleSpendingInputChange(event) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const teamId = parseInt(event.target.dataset.teamid);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const spendingCategory = event.target.name;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const value = parseInt(event.target.value) || 0;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const team = teams.find(t =&gt; t.id === teamId);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (team &amp;&amp; !team.isEliminated) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>team.spendingThisRound[spendingCategory] = value;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>team.totalRoundSpending = Object.values(team.spendingThisRound).reduce((sum, val) =&gt; sum + val, 0);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>updateTeamTotalSpendingDisplay(team.id);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>nextRoundButton.addEventListener('click', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>clearMessage();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>let allInputsValid = true;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>let activeTeams = teams.filter(t =&gt; !t.isEliminated);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (activeTeams.length === 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>showMessage("All teams have been eliminated. Game Over!", "error");</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>nextRoundButton.disabled = true;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const currentCase = patientCases[currentRound - 1];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!currentCase) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.error("Could not find patient case for round: ", currentRound);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>activeTeams.forEach(team =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const insuranceInput = document.getElementById(`insurance-${team.id}`);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const copayInput = document.getElementById(`copay-${team.id}`);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const coinsuranceInput = document.getElementById(`coinsurance-${team.id}`);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const housingFamilyInput = document.getElementById(`housingFamily-${team.id}`);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>team.spendingThisRound.insurance = parseInt(insuranceInput.value) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>team.spendingThisRound.copay = parseInt(copayInput.value) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>team.spendingThisRound.coinsurance = parseInt(coinsuranceInput.value) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>team.spendingThisRound.housingFamily = parseInt(housingFamilyInput.value) || 0;</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>team.totalRoundSpending = Object.values(team.spendingThisRound).reduce((sum, val) =&gt; sum + val, 0);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>updateTeamTotalSpendingDisplay(team.id);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (team.totalRoundSpending &gt; team.budget) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>showMessage(`${team.name} cannot spend $${team.totalRoundSpending.toLocaleString()}. Budget is $${team.budget.toLocaleString()}.`, 'error');</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>allInputsValid = false;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!allInputsValid) return;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>activeTeams.forEach(team =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// Update budget</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>team.budget -= team.totalRoundSpending;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>updateTeamBudgetDisplay(team.id);</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// Update patient health using country-specific ideal spend</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const idealSpendForTeam = currentCase.idealSpend[team.name];</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (idealSpendForTeam &amp;&amp; team.totalRoundSpending &lt; idealSpendForTeam) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const percentageOfCareMet = team.totalRoundSpending / idealSpendForTeam;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const healthLoss = (1 - percentageOfCareMet) * 15;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>team.patientHealth = Math.max(0, team.patientHealth - healthLoss);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>updateTeamHealthDisplay(team.id);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// Check for budget elimination</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (team.budget &lt;= 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>team.isEliminated = true;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>team.budget = 0;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>updateTeamBudgetDisplay(team.id);</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>showMessage(`${team.name} has run out of money and is eliminated!`, 'error');</p>
+<p class="p2"><span class="Apple-converted-space">                        </span></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const teamElement = document.getElementById(`team-${team.id}`);</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>teamElement.querySelectorAll('input[type="number"]').forEach(input =&gt; input.disabled = true);</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>teamElement.style.opacity = 0.6;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (teams.every(t =&gt; t.isEliminated)) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>showMessage("All teams have been eliminated. Game Over!", "error");</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>nextRoundButton.disabled = true;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>currentRound++;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>loadPatientCaseForRound(currentRound);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Populate Patient Cases (EDIT THIS SECTION) ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Each case now has an idealSpend OBJECT where you can set a value for each country.</p>
+<p class="p1"><span class="Apple-converted-space">            </span>patientCases = [</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>round: 1,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>description: "Patient A (Round 1): 45-year-old software developer with acute appendicitis. Requires emergency surgery, hospital stay, and follow-up.",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>idealSpend: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"United States": 3500,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"United Kingdom": 2800,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"India": 1200,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"Switzerland": 4000,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"Singapore": 3200</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>round: 2,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>description: "Patient B (Round 2): 72-year-old retired teacher with newly diagnosed Type 2 Diabetes. Requires lifestyle education, medication, regular glucose monitoring supplies, and specialist consultation.",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>idealSpend: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"United States": 1800,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"United Kingdom": 1200,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"India": 600,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"Switzerland": 2000,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"Singapore": 1500</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>round: 3,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>description: "Patient C (Round 3): 6-month-old infant with a severe respiratory infection (RSV). Requires hospitalization, oxygen therapy, and potential intensive care.",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>idealSpend: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"United States": 6000,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"United Kingdom": 4500,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"India": 2000,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"Switzerland": 6500,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"Singapore": 5500</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>round: 4,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>description: "Patient D (Round 4): 30-year-old gig economy worker with a major depressive episode and anxiety. Needs therapy, medication, and support for temporary inability to work.",</p>
+<p class="p1"><span class="Apple-converted-space">                     </span>idealSpend: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"United States": 2800,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"United Kingdom": 2200,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"India": 800,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"Switzerland": 3200,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"Singapore": 2600</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                </span>{<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>round: 5,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>description: "Patient E (Round 5): 55-year-old factory worker with chronic back pain due to a workplace injury. Needs pain management, physical therapy, and assessment for disability benefits.",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>idealSpend: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"United States": 2500,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"United Kingdom": 1800,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"India": 700,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"Switzerland": 2800,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>"Singapore": 2200</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- End of Patient Cases ---</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Start the game ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>initializeGame();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
